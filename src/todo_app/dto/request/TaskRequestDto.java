@@ -8,12 +8,12 @@ import todo_app.entity.Task;
 @Getter
 public class TaskRequestDto {
 	
-	private String author;
+	private String deadline;
 	private String content;
 	
 	public Task toEntity() {
 		// 요청값으로 Board 객체 생성
-		return new Task(author, content);
+		return new Task(deadline, content);
 	}
 
 }

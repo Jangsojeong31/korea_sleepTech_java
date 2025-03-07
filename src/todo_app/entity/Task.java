@@ -1,27 +1,30 @@
 package todo_app.entity;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@Data
-
+@AllArgsConstructor
+@Getter
+@Setter
 public class Task {
 	private int todoId;
-	private String author;
+	private String deadline;
 	private String content;
 
 	public boolean isDone;  // 할일 완료 -> true
 	
-	public Task( String content, String author) {
+	
+	public Task( String deadline, String content) {
+		this.deadline = deadline;
 		this.content = content;
-		this.author = author;
+		this.isDone = false;
 	}
 	
-	@Override
-	public String toString() {
-		return "todoId: " + todoId + ", 작성자: " + author
-				+ ", 할일 : " + content;
-	}
 	
+	public void completeTask() {
+		this.isDone = true;
+	}
 	
 }

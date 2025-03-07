@@ -161,12 +161,12 @@ public class App {
 				break;
 				}
 			case 6:{
-				System.out.print("작성자: ");
-				String author = sc.nextLine();
-				System.out.print("할일 내용: ");
+				System.out.print("마감기한: ");
+				String deadline = sc.nextLine();
+				System.out.print("할일: ");
 				String content = sc.nextLine();
 				
-				taskController.creatTask(new TaskRequestDto(author, content));
+				taskController.creatTask(new TaskRequestDto(deadline, content));
 				break;
 			}
 			case 7:{
@@ -174,38 +174,40 @@ public class App {
 				break;
 			}
 			case 8:{
-				System.out.print("작성자 : ");
-				String author = sc.nextLine();
-				System.out.println(taskController.getTaskByAuthor(author));
+				System.out.print("조회할 할일 : ");
+				String content = sc.nextLine();
+				System.out.println(taskController.getTaskByContent(content));
 				
 				break;
 			}
 			case 9:{
-				System.out.println("todoId: ");
+				System.out.println("수정할 할일의 todoId: ");
 				int todoId = sc.nextInt();
 				sc.nextLine();
-				System.out.println("새로운 내용");
+				System.out.print("마감기한 바꾸기: ");
+				String newDeadline = sc.nextLine();
+				System.out.print("내용 바꾸기: ");
 				String newContent = sc.nextLine();
-				taskController.updateTask(todoId, new TaskRequestDto("author", newContent));
+				taskController.updateTask(todoId, new TaskRequestDto(newDeadline, newContent));
 				
 			break;
 			}
 			case 10:{
-				System.out.println("todoId: ");
+				System.out.println("삭제할 할일의 todoId: ");
 				int todoId = sc.nextInt();
 				sc.nextLine();
 				taskController.deleteTask(todoId);
 				break;
 				}
-//			case 11:
-//				TASK_CONTROLLER.checkUncompletedTask();
-//				break;
-//			case 12: {
-//				int todoId = sc.nextInt();
-//				sc.nextLine();
-//				TASK_CONTROLLER.completeTask(todoId);
-//				break;
-//				}
+			case 11: {
+				System.out.print("완료한 할일: ");
+				String content = sc.nextLine();
+				taskController.completeTask(content);
+				break;
+				}
+			case 12:
+				taskController.checkUncompletedTask();
+				break;
 			case 0:
 				System.out.println("프로그램을 종료합니다.");
 				sc.close();

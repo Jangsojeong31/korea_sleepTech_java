@@ -21,16 +21,20 @@ public class TaskRepository {
 		return taskList;
 	};
 	
-	public Optional<Task> findByAuthor (String author)
+	public Task findByContent (String content)
 	{  // 단건 조회
-		return taskList.stream().filter(task -> task.getAuthor() == author)
-				.findFirst();
-
+		for(Task task: taskList) {
+			if (task.getContent().equals(content)) {
+				return task;
+			}
+		}
+		return null;
 	};
 	
-	public void update (int todoId, String content) {  // 수정
+	public void update (int todoId, String deadline,String content) {  // 수정
 		for(Task task: taskList) {
 			if(task.getTodoId() == todoId) {
+				task.setDeadline(deadline);
 				task.setContent(content);
 			}
 		}

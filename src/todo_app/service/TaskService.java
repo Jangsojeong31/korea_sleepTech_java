@@ -10,10 +10,10 @@ public interface TaskService {
 	
 	void createTask(TaskRequestDto dto);
 	List<TaskResponseDto> findAllTasks();
-	TaskResponseDto findTaskByAuthor(String author);
+	TaskResponseDto findTaskByContent(String content);
 	public void updateTask(int todoId, TaskRequestDto dto);
 	void deleteTask(int todoId);
 	
-//	List<Task> checkUncompletedTask();
-//	public void completeTask(int todoId);
+	List<TaskResponseDto> checkUncompletedTask();
+	public void completeTask(String content);
 }

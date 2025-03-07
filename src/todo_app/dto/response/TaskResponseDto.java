@@ -8,12 +8,14 @@ import todo_app.entity.Task;
 @AllArgsConstructor
 public class TaskResponseDto {
 	private int todoId;
-	private String author;
+	private String deadline;
 	private String content;
+	
+	public TaskResponseDto() {}
 	
 	public TaskResponseDto(Task task) {
 		this.todoId = task.getTodoId();
-		this.author = task.getAuthor();
+		this.deadline = task.getDeadline();
 		this.content = task.getContent();
 	}
 	
@@ -23,8 +25,7 @@ public class TaskResponseDto {
 	
 	@Override
 	public String toString() {
-		return "[" + todoId + "] 작성자 : " + author 
-				+ ", 할일 : " + content;
+		return "[" + todoId + "] 할일 : " + content + " " + deadline + "까지";
 	}
 
 }

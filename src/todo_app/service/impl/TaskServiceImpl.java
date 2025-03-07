@@ -1,7 +1,6 @@
 package todo_app.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import todo_app.dto.request.TaskRequestDto;
@@ -37,18 +36,17 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public TaskResponseDto findTaskByAuthor(String author) {
+	public TaskResponseDto findTaskByContent(String content) {
 		// TODO Auto-generated method stub
-		Optional<Task> task = repository.findByAuthor(author);
-		TaskResponseDto responseDto = task.map(TaskResponseDto::fromEntity)
-				.orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+		Task task = repository.findByContent(content);
+		TaskResponseDto responseDto = TaskResponseDto.fromEntity(task);
 		return responseDto;
 	}
 
 	@Override
 	public void updateTask(int todoId, TaskRequestDto dto) {
 		// TODO Auto-generated method stub
-		repository.update(todoId, dto.getContent());
+		repository.update(todoId, dto.getDeadline(), dto.getContent());
 		
 	}
 
@@ -61,23 +59,25 @@ public class TaskServiceImpl implements TaskService{
 	
 	
 
-//	@Override
-//	public List<Task> checkUncompletedTask() {
-//		// TODO Auto-generated method stub
-//		
-//		List<Task> uncompletedTask = repository.findAll().stream()
-//				.filter(task -> task.isDone())
-//				.collect(Collectors.toList());
-//		
-//		return uncompletedTask;
-//		
-//	}
-//	
-//	public void completeTask(int todoId) {
-//		Task task = repository.findTaskById(todoId);
-//		task.isDone = true;
-//		System.out.println("할일을 완료했습니다.");
-//	}
+	@Override
+	public List<TaskResponseDto> checkUncompletedTask() {
+		// TODO Auto-generated method stub
+		
+		List<TaskResponseDto> uncompletedTask = repository.findAll().stream()
+				.filter(task -> task.isDone() == false)
+				.map(TaskResponseDto::fromEntity)
+				.collect(Collectors.toList());
+		
+		return uncompletedTask;
+		
+		
+	}
+	
+	public void completeTask(String content) {
+		Task task = repository.findByContent(content);
+		task.completeTask();
+		
+	}
 	
 	
 }
