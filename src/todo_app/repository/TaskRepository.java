@@ -2,9 +2,6 @@ package todo_app.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import chapter015.boardApp.entity.Board;
 import todo_app.entity.Task;
 
 public class TaskRepository {
@@ -21,14 +18,13 @@ public class TaskRepository {
 		return taskList;
 	};
 	
-	public Task findByContent (String content)
-	{  // 단건 조회
+	public Task findByContent (String content) {  // 단건 조회
 		for(Task task: taskList) {
 			if (task.getContent().equals(content)) {
 				return task;
 			}
 		}
-		return null;
+		return null;	
 	};
 	
 	public void update (int todoId, String deadline,String content) {  // 수정

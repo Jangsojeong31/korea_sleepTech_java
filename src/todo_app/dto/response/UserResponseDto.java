@@ -7,7 +7,12 @@ import lombok.Getter;
 @Getter
 public class UserResponseDto {
 
-	private String userId;
 	private String name;
+	private String userId;
+	
+	@Override
+	public String toString() {
+		return "이름: " + name + " / 아이디: " + userId;
+	}
 	
 }

@@ -7,7 +7,6 @@ import todo_app.controller.UserController;
 import todo_app.dto.request.TaskRequestDto;
 import todo_app.dto.request.UserSignInRequestDto;
 import todo_app.dto.request.UserSignUpRequestDto;
-import todo_app.entity.Task;
 
 /*
  * === TODO(할 일) 프로그램 ===
@@ -84,7 +83,7 @@ public class App {
 			System.out.println("회원 email: ");
 			String email = sc.nextLine();
 			
-			UserSignUpRequestDto dto = new UserSignUpRequestDto(userId, password, name, email);
+			UserSignUpRequestDto dto = new UserSignUpRequestDto(name, userId, password, email);
 			
 			return dto;
 		}
@@ -101,120 +100,99 @@ public class App {
 			return dto;
 		}
 		
-//		private static TaskRequestDto createTaskRequest() {
-//			
-//			System.out.println("todoId: ");
-//			int todoId = sc.nextInt();
-//			sc.nextLine();
-//			System.out.println("회원 Id: ");
-//			String userId = sc.nextLine();
-//			System.out.println("할일 내용: ");
-//			String content = sc.nextLine();
-//			
-//			TaskRequestDto dto = new TaskRequestDto(todoId, userId, content);
-//			
-//			return dto;
-//		}
+		private static TaskRequestDto createTaskRequest() {
+			
+			System.out.print("마감기한: ");
+			String deadline = sc.nextLine();
+			System.out.print("할일: ");
+			String content = sc.nextLine();
+			
+			TaskRequestDto dto = new TaskRequestDto(deadline, content);
+			
+			return dto;
+		}
+
 		
 		public static void main(String[] args) {
 			
-		while(true) {
-			System.out.println("1. 회원가입");
-			System.out.println("2. 로그인");
-//			System.out.println("3. 회원 조회");
-			System.out.println("4. 로그아웃");
-			System.out.println("5. 회원탈퇴");
-
-			System.out.println("6. 할일 추가");
-			System.out.println("7. 할일 전체 조회");
-			System.out.println("8. 할일 단건 조회");
-			System.out.println("9. 할일 수정");
-			System.out.println("10. 할일 삭제");
-			System.out.println("11. 할일 완료");
-			System.out.println("12. 미완료된 할일");
-
-			System.out.println("0. 프로그램 종료");
-			System.out.print("메뉴를 선택하세요: ");
+			while(true) {
+				System.out.println("1. 회원가입 | 2. 로그인 | 3. 로그아웃 | 4. 회원조회 | 5. 회원탈퇴");
+				System.out.println("6. 할일 추가 | 7. 할일 전체 조회 | 8. 할일 단건 조회 | 9. 할일 수정 | 10. 할일 삭제");
+				System.out.println("11. 할일 완료 | 12. 미완료된 할일 조회");
+				System.out.println("0. 프로그램 종료");
+				System.out.print("메뉴를 선택하세요: ");
+				
+				int choice = sc.nextInt();
+				sc.nextLine(); // 버퍼 처리
 			
-			int choice = sc.nextInt();
-			sc.nextLine(); // 버퍼 처리
-		
-			switch(choice) {
-			case 1:
-				UserSignUpRequestDto signUpDto = createUserSignUpRequest();
-				userController.signUp(signUpDto);
-				break;
-			case 2:
-				UserSignInRequestDto signInDto = createUserSignInRequest();
-				userController.signIn(signInDto);
-				break;
-			case 3:
-//				userController
-				break;
-			case 4:
-				userController.logout();
-				break;
-			case 5:{
-				System.out.println("ID를 입력하세요 : ");
-				String userId = sc.nextLine();
-				userController.withdraw(userId);
-				break;
+				switch(choice) {
+				case 1:
+					userController.signUp(createUserSignUpRequest());
+					break;
+				case 2:{
+					userController.signIn(createUserSignInRequest());
+					break;
 				}
-			case 6:{
-				System.out.print("마감기한: ");
-				String deadline = sc.nextLine();
-				System.out.print("할일: ");
-				String content = sc.nextLine();
+				case 3:{
+					System.out.println("Id를 입력하세요: ");
+					String userId = sc.nextLine();
+					userController.logout(userId);
+					break;
+					}
+				case 4:
+					System.out.println("[회원 전체 조회]");
+					System.out.println(userController.getAllUsers());
+					break;
+				case 5:{
+					System.out.print("ID를 입력하세요 : ");
+					String userId = sc.nextLine();
+					userController.deleteUser(userId);
+					break;
+					}
+				case 6:{
+					taskController.creatTask(createTaskRequest());
+					break;
+					}
+				case 7:{
+					taskController.getAllTasks().forEach(System.out::println);
+					break;
+					}
+				case 8:{
+					System.out.print("조회할 할일 : ");
+					String content = sc.nextLine();
+					System.out.println(taskController.getTaskByContent(content));
+					break;
+					}
+				case 9:{
+					System.out.println("수정할 할일의 todoId: ");
+					int todoId = sc.nextInt();
+					sc.nextLine();
+					taskController.updateTask(todoId, createTaskRequest());
+					break;
+					}
+				case 10:{
+					System.out.println("삭제할 할일의 todoId: ");
+					int todoId = sc.nextInt();
+					sc.nextLine();
+					taskController.deleteTask(todoId);
+					break;
+					}
+				case 11: {
+					System.out.print("완료한 할일: ");
+					String content = sc.nextLine();
+					taskController.completeTask(content);
+					break;
+					}
+				case 12:
+					taskController.checkUncompletedTask();
+					break;
+				case 0:
+					System.out.println("프로그램을 종료합니다.");
+					sc.close();
+					return;
 				
-				taskController.creatTask(new TaskRequestDto(deadline, content));
-				break;
-			}
-			case 7:{
-				taskController.getAllTasks().forEach(System.out::println);
-				break;
-			}
-			case 8:{
-				System.out.print("조회할 할일 : ");
-				String content = sc.nextLine();
-				System.out.println(taskController.getTaskByContent(content));
-				
-				break;
-			}
-			case 9:{
-				System.out.println("수정할 할일의 todoId: ");
-				int todoId = sc.nextInt();
-				sc.nextLine();
-				System.out.print("마감기한 바꾸기: ");
-				String newDeadline = sc.nextLine();
-				System.out.print("내용 바꾸기: ");
-				String newContent = sc.nextLine();
-				taskController.updateTask(todoId, new TaskRequestDto(newDeadline, newContent));
-				
-			break;
-			}
-			case 10:{
-				System.out.println("삭제할 할일의 todoId: ");
-				int todoId = sc.nextInt();
-				sc.nextLine();
-				taskController.deleteTask(todoId);
-				break;
 				}
-			case 11: {
-				System.out.print("완료한 할일: ");
-				String content = sc.nextLine();
-				taskController.completeTask(content);
-				break;
-				}
-			case 12:
-				taskController.checkUncompletedTask();
-				break;
-			case 0:
-				System.out.println("프로그램을 종료합니다.");
-				sc.close();
-				return;
-			
 			}
-		}
 		}
 			
 			

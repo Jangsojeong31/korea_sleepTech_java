@@ -11,9 +11,8 @@ public interface UserService {
 	
 	void signUp(UserSignUpRequestDto dto);
 	void signIn(UserSignInRequestDto dto);
+	void logout(String userId);
 	public List<UserResponseDto> listAllUsers();
-	UserResponseDto findUserById(String userId);
-	void logout();
 	void deleteUser(String userId);
 
 }

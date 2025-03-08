@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 public class UserSignUpRequestDto { // 회원가입
 
+	private String name;
 	private String userId;
 	private String password;
-	private String name;
 	private String email;
 	
 }

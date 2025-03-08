@@ -12,8 +12,8 @@ import todo_app.service.UserService;
 
 public class UserServiceImpl implements UserService {
 	
-	private UserRepository repository;
-	private boolean isLoggedIn;
+	private final UserRepository repository;
+	
 	
 	public UserServiceImpl() {
 		this.repository = new UserRepository();
@@ -22,8 +22,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void signUp(UserSignUpRequestDto dto) {
 		// TODO Auto-generated method stub
-		User user = new User(dto.getUserId(), dto.getPassword()
-				, dto.getName(), dto.getEmail());
+		User user = new User(dto.getName(), dto.getUserId(), dto.getPassword()
+				,  dto.getEmail());
 		repository.save(user);
 		
 	}
@@ -31,23 +31,30 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void signIn(UserSignInRequestDto dto) {
 		// TODO Auto-generated method stub
-		if(repository.findById(dto.getUserId()) != null) {
-			isLoggedIn = true;
-			System.out.println("로그인 되었습니다.");
+		User user = repository.findById(dto.getUserId());
+		if(user != null) {
+			user.setLoggedIn(true); 
+			System.out.println("아이디 [" + dto.getUserId() + "]님이 로그인되었습니다.");
+		}else {
+			System.out.println("잘못된 접근입니다.");
 		}
 	}
 
 
 	@Override
-	public void logout() {
-		if(isLoggedIn) {
-			isLoggedIn = false;
-			System.out.println("로그아웃 되었습니다.");
-		} else {
-			System.out.println("잘못된 접근입니다.");
+	public void logout(String userId) {
+		try {
+			User user = repository.findById(userId);
+			if(user.isLoggedIn() && repository.findById(userId) != null) {
+				user.setLoggedIn(false); 
+				System.out.println("아이디 [" + userId + "]님이 로그아웃되었습니다.");
+			} else {
+				System.out.println("잘못된 접근입니다.");
+			}
+		} catch (NullPointerException e)  {
+		    e.printStackTrace(); // 예외 발생 위치 확인
 		}
-		// TODO Auto-generated method stub
-		
+	
 	}
 
 	
@@ -56,16 +63,9 @@ public class UserServiceImpl implements UserService {
 		List<User> users = repository.findAll();
 		
 		List<UserResponseDto> responseDtos = users.stream()
-				.map(user -> new UserResponseDto(user.getUserId(), user.getName()))
+				.map(user -> new UserResponseDto( user.getName(), user.getUserId()))
 				.collect(Collectors.toList());
 		return responseDtos;
-	}
-
-	@Override
-	public UserResponseDto findUserById(String userId) {
-		User user = repository.findById(userId);
-		UserResponseDto responseDto = new UserResponseDto(user.getUserId(), user.getName());
-		return responseDto;
 	}
 
 	@Override

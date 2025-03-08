@@ -18,11 +18,16 @@ public class UserController {
 	
 	public void signUp(UserSignUpRequestDto dto) {
 		service.signUp(dto);
-	};
+		System.out.println("회원가입이 완료되었습니다.");
+	}
 	
 	public void signIn(UserSignInRequestDto dto) {
 		service.signIn(dto);
-	};
+	}
+	
+	public void logout(String userId) {
+		service.logout(userId);
+	}
 	
 	public List<UserResponseDto> getAllUsers() {
 		List<UserResponseDto> users = service.listAllUsers();
@@ -30,18 +35,11 @@ public class UserController {
 		
 	}
 	
-	public UserResponseDto getUserById(String userId) {
-		UserResponseDto user = service.findUserById(userId);
-		return user;
-	}
 	
-	public void logout() {
-		service.logout();
-	};
-	
-	public void withdraw(String userId) {
+	public void deleteUser(String userId) {
 		service.deleteUser(userId);
-	};
+		System.out.println("탈퇴가 완료되었습니다.");
+	}
 	
 	
 }
